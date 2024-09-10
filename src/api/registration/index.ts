@@ -1,11 +1,27 @@
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/providers/AuthProvider";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export type CreateStoreProps = {
   name: string;
   profile_id: string;
   phone: string;
+};
+
+export type CreateTailorProps = {
+  name: string;
+  profile_id: string;
+  phone: string;
+  areaOfSpecial: string;
+  description?: string;
+  details?: string;
+  age?: string;
+  experience?: string;
+  country?: number;
+  state?: number;
+  city?: number;
+  address?: string;
 };
 
 export const useCreateUserStore = () => {
@@ -36,5 +52,36 @@ export const useCreateUserStore = () => {
     //   async onSuccess() {
     //     await queryClient.invalidateQueries(['products']);
     //   },
+  });
+};
+
+export const useCreateUserTailor = () => {
+  return useMutation({
+    async mutationFn(tailor: CreateTailorProps) {
+      const { error, data: newProduct } = await supabase
+        // @ts-ignore
+        .from("tailors")
+        .insert({
+          name: tailor.name,
+          profile_id: tailor.profile_id,
+          phone: tailor.phone,
+          areaOfSpecial: tailor.areaOfSpecial,
+          description: tailor.description,
+          details: tailor.details,
+          age: tailor.age,
+          experience: tailor.experience,
+          country: tailor.country,
+          state: tailor.state,
+          city: tailor.city,
+          address: tailor.address,
+        })
+        .single();
+
+      if (error) {
+        throw new Error(error.message);
+      }
+      await AsyncStorage.clear();
+      return newProduct;
+    },
   });
 };

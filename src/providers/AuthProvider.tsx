@@ -14,6 +14,7 @@ type AuthData = {
   profile: Tables<"profiles"> | null;
   loading: boolean;
   isBusiness: boolean;
+  isTailor: boolean;
 };
 
 const AuthContext = createContext<AuthData>({
@@ -21,6 +22,7 @@ const AuthContext = createContext<AuthData>({
   loading: true,
   profile: null,
   isBusiness: false,
+  isTailor: false,
 });
 
 export default function AuthProvider({ children }: PropsWithChildren) {
@@ -65,6 +67,7 @@ export default function AuthProvider({ children }: PropsWithChildren) {
         loading,
         profile: profile,
         isBusiness: profile?.role === "business",
+        isTailor: profile?.role === "tailor",
       }}
     >
       {children}

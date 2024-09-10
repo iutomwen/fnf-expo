@@ -27,8 +27,8 @@ export default function CustomerLayout() {
   if (isBusiness && session) {
     return <Redirect href={"/(business)/(tabs)/"} />;
   }
-  if (isTailor && session) {
-    return <Redirect href={"/(tailor)/(tabs)/"} />;
+  if (!isTailor && session) {
+    return <Redirect href={"/(personal)/(tabs)/"} />;
   }
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -45,7 +45,7 @@ export default function CustomerLayout() {
               headerShown: false,
             }}
           />
-          <Stack.Screen
+          {/* <Stack.Screen
             name="profile/index"
             options={{
               headerShown: false,
@@ -56,8 +56,8 @@ export default function CustomerLayout() {
             options={{
               headerShown: true,
             }}
-          />
-          <Stack.Screen
+          /> */}
+          {/* <Stack.Screen
             name="search"
             options={{
               headerShown: false,
@@ -68,8 +68,8 @@ export default function CustomerLayout() {
             options={{
               headerShown: false,
             }}
-          />
-          <Stack.Screen
+          /> */}
+          {/* <Stack.Screen
             name="(modal)/location-search"
             options={{
               headerShown: true,
@@ -171,7 +171,7 @@ export default function CustomerLayout() {
                 </TouchableOpacity>
               ),
             }}
-          />
+          /> */}
         </Stack>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>

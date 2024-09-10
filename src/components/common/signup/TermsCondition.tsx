@@ -17,6 +17,7 @@ const TermsCondition = ({ nextStep }: LegalInfoProps) => {
     setTimeout(() => {
       nextStep({
         info: "terms-info",
+        isSubmit: true,
       });
     }, 1000);
   };

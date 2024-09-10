@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  RefreshControl,
-} from "react-native";
+import { StyleSheet, ScrollView, RefreshControl } from "react-native";
 import React from "react";
 import Colors from "@/constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";

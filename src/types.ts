@@ -54,6 +54,7 @@ export type LegalInfoProps = {
   nextStep: (data: {
     info: string;
     isBack?: boolean;
+    isSubmit?: boolean;
     data?: LegalInfoForm &
       LocationInfoForm &
       EmailInfoForm &

@@ -1,33 +1,14 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Pressable,
-  BackHandler,
-} from "react-native";
+import { StyleSheet, BackHandler } from "react-native";
 import React from "react";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import Animated from "react-native-reanimated";
-import { sharedElementTransition } from "@/lib/SharedElementTransition";
-import { appLogo } from "@/lib/images";
-import CustomInput from "@/components/common/CustomInput";
-import { EMAIL_REGEX, showToast } from "@/lib/helper";
-import LoadingScreen from "@/components/common/LoadingScreen";
-import CustomButton from "@/components/common/CustomButton";
-import Checkbox from "expo-checkbox";
+import { showToast } from "@/lib/helper";
 import { useRouter } from "expo-router";
 import { SubmitHandler, useForm } from "react-hook-form";
-import * as WebBrowser from "expo-web-browser";
 import { supabase } from "@/lib/supabase";
-import { useCreateUserStore } from "@/api/registration";
+import { useCreateUserTailor } from "@/api/registration";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import AppNavBar from "@/components/common/AppNavBar";
-import BusinessLegalInfo from "@/components/common/signup/business/BusinessLegalInfo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import BusinessInfo from "@/components/common/signup/business/BusinessInfo";
-import BusinessLocationInfo from "@/components/common/signup/business/BusinessLocationInfo";
 import EmailInfo from "@/components/common/signup/EmailInfo";
 import PasswordInfo from "@/components/common/signup/PasswordInfo";
 import TermsCondition from "@/components/common/signup/TermsCondition";
@@ -36,14 +17,17 @@ import ExperienceInfo from "@/components/common/signup/tailor/ExperienceInfo";
 import LocationInfo from "@/components/common/signup/personal/LocationInfo";
 import EducationInfo from "@/components/common/signup/tailor/EducationInfo";
 import AreaOfSpecialisation from "@/components/common/signup/tailor/AreaOfSpecialisation";
-type BusinessSubmitForm = {
+type TailorSubmitForm = {
   email: string;
   password: string;
   first_name: string;
   last_name: string;
   phone: string;
-  business_name: string;
-  business_number?: string;
+  areaOfSpecial: string;
+  description?: string;
+  details?: string;
+  age?: string;
+  experience?: string;
   country?: number;
   state?: number;
   city?: number;
@@ -51,52 +35,96 @@ type BusinessSubmitForm = {
 };
 const TailorSignUpScreen = () => {
   const router = useRouter();
-  const { control, handleSubmit } = useForm<BusinessSubmitForm>();
+  const { control, handleSubmit } = useForm<TailorSubmitForm>();
   const [isSelected, setSelection] = React.useState(false);
   const [isLoading, setLoading] = React.useState(false);
-  const [role, setRole] = React.useState("business");
+  const role = "tailor";
   const [steps, setSteps] = React.useState(0);
-  const [formData, setFormData] = React.useState<BusinessSubmitForm>({
+  const [formData, setFormData] = React.useState<TailorSubmitForm>({
     email: "",
     password: "",
     first_name: "",
     last_name: "",
     phone: "",
-    business_name: "",
-    business_number: "",
     city: 0,
     country: 0,
     state: 0,
     address: "",
+    areaOfSpecial: "",
+    description: "",
+    details: "",
+    age: "",
+    experience: "",
   });
   const onSignInPress = () => {
     router.push("/(auth)/sign-in");
   };
-  const { mutate: createUserStore } = useCreateUserStore();
-  const onSignUpPressed: SubmitHandler<BusinessSubmitForm> = async (data) => {
+  const { mutate: createUserTailor } = useCreateUserTailor();
+  const onSignUpPressed: SubmitHandler<TailorSubmitForm> = async (data) => {
     setLoading(true);
-    const { email, password, first_name, last_name, phone, business_name } =
-      data;
+    const {
+      email: userEmail,
+      password,
+      first_name,
+      last_name,
+      phone,
+      experience,
+      areaOfSpecial,
+      address,
+      age,
+      description,
+      details,
+      city,
+      country,
+      state,
+    } = data;
     const { error, data: newUser } = await supabase.auth.signUp({
-      email,
+      email: userEmail.toLowerCase(),
       password,
       options: {
         data: {
           first_name,
           last_name,
+          username: userEmail.toLowerCase(),
           user_role: role,
           phone,
-          business_name,
         },
       },
     });
     if (newUser.user?.id) {
-      const store = {
-        name: business_name,
+      const tailor = {
+        name: `${first_name} ${last_name}`,
+        areaOfSpecial,
+        age,
+        city,
+        state,
+        country,
+        address,
+        description,
+        details,
+        experience,
         profile_id: newUser.user.id,
         phone: phone,
       };
-      createUserStore(store);
+      try {
+        createUserTailor(tailor);
+      } catch (error) {
+        showToast({
+          messageType: "error",
+          header: "Error",
+          message: "An error occurred while creating your account",
+        });
+        setLoading(false);
+      } finally {
+        await supabase
+          .from("profiles")
+          .update({
+            city_id: city,
+            country_id: country,
+            state_id: state,
+          })
+          .match({ id: newUser.user.id });
+      }
     }
 
     if (error) {
@@ -134,12 +162,15 @@ const TailorSignUpScreen = () => {
       setSteps((steps) => steps + 1);
       mergeData(data.data);
     }
+
+    if (data.isSubmit) {
+      onSignUpPressed(formData);
+    }
   };
 
-  const mergeData = (data: BusinessSubmitForm) => {
+  const mergeData = (data: TailorSubmitForm) => {
     setFormData({ ...formData, ...data });
   };
-  console.log("B-form", formData);
   React.useEffect(() => {
     const backAction = (): boolean => {
       alert("Are you sure you want to go back?");
