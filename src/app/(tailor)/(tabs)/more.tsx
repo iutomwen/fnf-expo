@@ -57,22 +57,15 @@ const TailorSettings = () => {
           color: Colors.primary,
           label: "My Account",
           type: "link",
-          option: () => router.push("/(personal)/profile/"),
+          option: () => router.push("/(tailor)/profile/"),
         },
-        // {
-        //   icon: "heart",
-        //   color: Colors.primary,
-        //   label: "My Favorite List",
-        //   type: "link",
-        //   option: () => router.push('/personal/(tabs)/favorites'),
-        // },
 
         {
           icon: "user-cog",
           color: Colors.primary,
           label: "Change Password",
           type: "link",
-          option: () => router.push("/(personal)/profile/change-password"),
+          option: () => router.push("/(tailor)/profile/password"),
         },
       ],
     },
@@ -195,7 +188,7 @@ const TailorSettings = () => {
           <TouchableOpacity
             onPress={() => {
               // handle onPress
-              router.push("/(personal)/profile/edit-profile");
+              router.push("/(tailor)/profile/edit");
             }}
           >
             <View style={styles.profileAvatarWrapper}>
@@ -208,7 +201,7 @@ const TailorSettings = () => {
               <TouchableOpacity
                 onPress={() => {
                   // handle onPress
-                  router.push("/(personal)/profile/edit-profile");
+                  router.push("/(tailor)/profile/edit");
                 }}
               >
                 <View style={styles.profileAction}>

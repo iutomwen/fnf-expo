@@ -3,7 +3,7 @@ import React from "react";
 import Colors from "@/constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AvatarImage from "./AvatarImage";
-import { Link, router } from "expo-router";
+import { Link, router, usePathname } from "expo-router";
 import { Ionicons, FontAwesome5, Feather } from "@expo/vector-icons";
 import { useAuth } from "@/providers/AuthProvider";
 import { Image } from "expo-image";
@@ -11,6 +11,7 @@ import { appLogo } from "@/lib/images";
 import { blurhash } from "@/lib/helper";
 const TailorCustomHeader = () => {
   const { profile } = useAuth();
+  const path = usePathname();
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
@@ -25,12 +26,16 @@ const TailorCustomHeader = () => {
         />
 
         <TouchableOpacity
-          onPress={() => router.push("/(tailor)/profile/")}
+          onPress={() =>
+            path === "/profile"
+              ? router.replace("/(tailor)/")
+              : router.push("/(tailor)/profile/")
+          }
           style={styles.profileButton}
         >
           <AvatarImage
             file={profile?.avatar_url}
-            size={35}
+            size={65}
             name={"ProfileAvatar"}
           />
         </TouchableOpacity>
