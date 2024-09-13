@@ -15,6 +15,8 @@ type AuthData = {
   loading: boolean;
   isBusiness: boolean;
   isTailor: boolean;
+  isPersonal: boolean;
+  logout: () => void;
 };
 
 const AuthContext = createContext<AuthData>({
@@ -23,6 +25,8 @@ const AuthContext = createContext<AuthData>({
   profile: null,
   isBusiness: false,
   isTailor: false,
+  isPersonal: false,
+  logout: () => {},
 });
 
 export default function AuthProvider({ children }: PropsWithChildren) {
@@ -60,6 +64,13 @@ export default function AuthProvider({ children }: PropsWithChildren) {
       data?.subscription.unsubscribe();
     };
   }, []);
+  // Function to log out the user and reset context
+  const logout = async () => {
+    await supabase.auth.signOut();
+    setSession(null);
+    setProfile(null);
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -68,6 +79,8 @@ export default function AuthProvider({ children }: PropsWithChildren) {
         profile: profile,
         isBusiness: profile?.role === "business",
         isTailor: profile?.role === "tailor",
+        isPersonal: profile?.role === "personal",
+        logout,
       }}
     >
       {children}

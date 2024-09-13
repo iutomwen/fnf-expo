@@ -1,15 +1,14 @@
-import { View, Text, Alert } from "react-native";
+import { View, Text, Alert, KeyboardAvoidingView } from "react-native";
 import React from "react";
-import { useRouter } from "expo-router";
-import { useForm } from "react-hook-form";
-import { PasswordFormProps } from "@/types";
-import { SafeAreaView } from "react-native-safe-area-context";
-import CustomHeadMenu from "@/components/common/CustomHeadMenu";
+import { set, SubmitHandler, useForm } from "react-hook-form";
 import CustomInput from "@/components/common/CustomInput";
 import CustomButton from "@/components/common/CustomButton";
+import { useRouter } from "expo-router";
+import { PasswordFormProps } from "@/types";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { supabase } from "@/lib/supabase";
-
-const ChangeBusinessPasswordScreen = () => {
+import { showToast } from "@/lib/helper";
+const TailorPassword = () => {
   const router = useRouter();
   const { control, handleSubmit, watch, setError } =
     useForm<PasswordFormProps>();
@@ -53,13 +52,8 @@ const ChangeBusinessPasswordScreen = () => {
     }
   }
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <CustomHeadMenu
-        header={"Change Password"}
-        innerScreen={true}
-        hasImage={true}
-      />
-      <View className="flex-col items-center justify-center flex-1 space-y-2 ">
+    <SafeAreaView style={{ flex: 1 }} edges={[]}>
+      <View className="flex-col items-center justify-center flex-1 space-y-2 mt-10 pb-10">
         <View style={{ flex: 1, width: "100%" }}>
           <View className={`flex-1 justify-center items-start mt-10 mx-5 `}>
             <View className="w-full ">
@@ -128,4 +122,4 @@ const ChangeBusinessPasswordScreen = () => {
   );
 };
 
-export default ChangeBusinessPasswordScreen;
+export default TailorPassword;

@@ -425,7 +425,6 @@ const CarouselCardItem = ({ item, store, hasSub }: CarouselCardItemProps) => {
               }}
               onSuccess={async (response) => {
                 // handle response here
-                // console.log(response.data);
                 if (response.status === "success") {
                   try {
                     //create a payment history

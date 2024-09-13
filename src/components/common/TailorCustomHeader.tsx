@@ -1,4 +1,10 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Pressable,
+} from "react-native";
 import React from "react";
 import Colors from "@/constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -15,22 +21,28 @@ const TailorCustomHeader = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <Image
-          placeholder={blurhash}
-          cachePolicy={"memory"}
-          source={appLogo}
-          style={{
-            width: 100,
-            height: 50,
-          }}
-        />
+        <View className="flex flex-row items-center">
+          {path !== "/" && (
+            <Pressable onPress={() => router.back()}>
+              <Ionicons name="arrow-back" size={30} color={Colors.light.text} />
+            </Pressable>
+          )}
+          <Image
+            placeholder={blurhash}
+            cachePolicy={"memory"}
+            source={appLogo}
+            style={{
+              width: 100,
+              height: 50,
+            }}
+          />
+        </View>
 
         <TouchableOpacity
           onPress={() =>
-            path === "/profile"
-              ? router.replace("/(tailor)/")
-              : router.push("/(tailor)/profile/")
+            path === "/profile" ? null : router.push("/(tailor)/profile/")
           }
+          disabled={path === "/profile"}
           style={styles.profileButton}
         >
           <AvatarImage

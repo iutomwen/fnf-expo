@@ -50,7 +50,6 @@ export default function FilterScreen() {
   );
   const [selected, setSelected] = useState<CategoryStateProps[]>([]);
   const [orderBy, setOrderBy] = useState<string | "desc" | "asc">("desc");
-  // console.log("order: ",items[0]?.orderBy ? items[0].orderBy : "desc")
   const [nearBy, setNearBy] = useState<boolean>(false);
   const flexWidth = useSharedValue(0);
   const scale = useSharedValue(0);

@@ -73,3 +73,24 @@ export const useGetMyProfileDetails = () => {
     staleTime: 1000 * 60 * 15, // 15 minutes
   });
 };
+
+export const useGetTailorProfileDetails = () => {
+  const { session } = useAuth();
+  return useQuery({
+    queryKey: ["TailorDetails", session?.user.id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("tailors")
+        .select(
+          "*, city:tailors_city_fkey(*), state:tailors_state_fkey(*), country:tailors_country_fkey(*)"
+        )
+        .eq("profile_id", session?.user.id as string)
+        .single();
+      if (error) {
+        throw new Error(error.message);
+      }
+      return data;
+    },
+    staleTime: 1000 * 60 * 15, // 15 minutes
+  });
+};

@@ -95,6 +95,11 @@ export type PersonalAccountProps = Tables<"profiles"> & {
   };
 };
 
+export type TailorAccountProps = Tables<"tailors"> & {
+  city: Tables<"cities">;
+  state: Tables<"states">;
+  country: Tables<"countries">;
+};
 export type PasswordFormProps = {
   old_password: string;
   password: string;

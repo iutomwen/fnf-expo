@@ -24,6 +24,7 @@ import { supabase } from "@/lib/supabase";
 
 const TailorSettings = () => {
   const router = useRouter();
+  const { logout } = useAuth();
   const { data, isLoading, refetch } = useGetMyProfileDetails();
   const [account, setAccount] = React.useState<PersonalAccountProps | null>(
     null
@@ -188,7 +189,7 @@ const TailorSettings = () => {
           <TouchableOpacity
             onPress={() => {
               // handle onPress
-              router.push("/(tailor)/profile/edit");
+              router.push("/(tailor)/profile");
             }}
           >
             <View style={styles.profileAvatarWrapper}>
@@ -212,12 +213,12 @@ const TailorSettings = () => {
           </TouchableOpacity>
 
           <View>
-            <Text style={styles.profileName}>
+            <Text style={styles.profileName} className=" capitalize">
               {account?.first_name || "..."} {account?.last_name || "..."}
             </Text>
 
             <Text style={styles.profileAddress}>
-              {account?.address || "N/A"},{"\n"}
+              {/* {account?.address || "N/A"},{"\n"} */}
               {account?.city?.name || "N/A"} {account?.state?.name || "N/A"},{" "}
               {account?.country?.name || "N/A"}
             </Text>
@@ -240,7 +241,7 @@ const TailorSettings = () => {
                       }
                     }
                     if (type === "logout") {
-                      await supabase.auth.signOut();
+                      logout();
                     }
                     if (type === "delete") {
                       showAlertDialog();

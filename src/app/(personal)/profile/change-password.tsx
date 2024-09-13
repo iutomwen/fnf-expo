@@ -12,13 +12,50 @@ import CustomButton from "@/components/common/CustomButton";
 import { useRouter } from "expo-router";
 import CustomHeadMenu from "@/components/common/CustomHeadMenu";
 import { PasswordFormProps } from "@/types";
+import { supabase } from "@/lib/supabase";
 const ChangePasswordScreen = () => {
   const router = useRouter();
-  const { control, handleSubmit, watch } = useForm<PasswordFormProps>();
+  const { control, handleSubmit, watch, setError } =
+    useForm<PasswordFormProps>();
   let pwd = watch("password");
 
   const [load, setLoad] = React.useState(false);
-  async function updateUserPassword(values: PasswordFormProps) {}
+  async function updateUserPassword(values: PasswordFormProps) {
+    setLoad(true);
+    try {
+      // check if current password is correct
+      let { data, error } = await supabase.rpc("verify_user_password", {
+        password: values.old_password,
+      });
+      if (error) throw error;
+      if (!data) {
+        // set password error
+        setError("old_password", {
+          type: "manual",
+          message: "Current password is incorrect",
+        });
+        return;
+      } else {
+        try {
+          const { data, error } = await supabase.auth.updateUser({
+            password: values.password,
+          });
+          if (error) throw error;
+          if (data) {
+            Alert.alert("Success", "Password updated successfully");
+            setLoad(false);
+            router.back();
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoad(false);
+    }
+  }
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <CustomHeadMenu

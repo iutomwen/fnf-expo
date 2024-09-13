@@ -120,7 +120,6 @@ const PersonalSignUpScreen = () => {
   const mergeData = (data: PersonalAccountSubmitForm) => {
     setFormData({ ...formData, ...data });
   };
-  console.log("form", formData);
   React.useEffect(() => {
     const backAction = (): boolean => {
       alert("Are you sure you want to go back?");

@@ -47,6 +47,14 @@ export default function CustomerLayout() {
             header: () => <TailorCustomHeader />,
           }}
         />
+        <Stack.Screen name="profile/edit" />
+        <Stack.Screen
+          name="profile/password"
+          options={{
+            headerShown: true,
+            header: () => <TailorCustomHeader />,
+          }}
+        />
         {/*  <Stack.Screen
             name="details"
             options={{

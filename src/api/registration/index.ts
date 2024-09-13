@@ -59,7 +59,6 @@ export const useCreateUserTailor = () => {
   return useMutation({
     async mutationFn(tailor: CreateTailorProps) {
       const { error, data: newProduct } = await supabase
-        // @ts-ignore
         .from("tailors")
         .insert({
           name: tailor.name,

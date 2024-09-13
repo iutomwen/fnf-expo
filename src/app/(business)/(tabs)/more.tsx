@@ -26,7 +26,7 @@ import CustomAlertDialog from "@/components/common/CustomAlertDialog";
 
 const MoreSettings = () => {
   const router = useRouter();
-  const { profile } = useAuth();
+  const { profile, logout } = useAuth();
   const [refreshing, setRefreshing] = React.useState(false);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -224,7 +224,7 @@ const MoreSettings = () => {
                       }
                     }
                     if (type === "logout") {
-                      await supabase.auth.signOut();
+                      logout();
                     }
                     if (type === "delete") {
                       showAlertDialog();

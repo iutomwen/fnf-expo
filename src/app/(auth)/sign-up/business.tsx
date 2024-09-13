@@ -165,7 +165,6 @@ const BusinessSignUpScreen = () => {
   const mergeData = (data: BusinessSubmitForm) => {
     setFormData({ ...formData, ...data });
   };
-  console.log("B-form", formData);
   React.useEffect(() => {
     const backAction = (): boolean => {
       alert("Are you sure you want to go back?");

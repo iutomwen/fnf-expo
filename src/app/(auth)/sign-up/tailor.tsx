@@ -122,6 +122,7 @@ const TailorSignUpScreen = () => {
             city_id: city,
             country_id: country,
             state_id: state,
+            phone,
           })
           .match({ id: newUser.user.id });
       }

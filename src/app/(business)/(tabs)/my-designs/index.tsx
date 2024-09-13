@@ -24,7 +24,6 @@ const MyDesignsScreen = () => {
   const [productsCount, setProductsCount] = React.useState(0);
   const [myStore, setStore] = React.useState<BusinessStoreProps>();
   const { data: store, isLoading } = useMyStoreDetails(profile?.id || "");
-  // console.log(JSON.stringify(store, null, 2));
   React.useEffect(() => {
     if (store) {
       setStore(store as unknown as BusinessStoreProps);

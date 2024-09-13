@@ -1,6 +1,7 @@
 import TailorCustomHeader from "@/components/common/TailorCustomHeader";
 import Colors from "@/constants/Colors";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import Entypo from "@expo/vector-icons/Entypo";
 import { Tabs } from "expo-router";
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
@@ -40,7 +41,9 @@ export default function PersonalTabLayout() {
         options={{
           title: "My Ads",
           headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="store" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <Entypo name="megaphone" size={25} color={color} />
+          ),
         }}
       />
       <Tabs.Screen

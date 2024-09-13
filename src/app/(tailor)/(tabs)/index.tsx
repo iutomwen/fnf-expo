@@ -18,11 +18,11 @@ const TailorHome = () => {
       >
         <View className="bg-white px-3 py-5">
           <View className="flex flex-row justify-between border rounded-md border-red-600 p-2">
-            <Text className="text-lg font-light">-- Free plan</Text>
-            <Text className="text-lg font-bold underline">Upgrade</Text>
+            <Text className="text-lg font-light">-- Not Subscribed</Text>
+            <Text className="text-lg font-bold underline">Subscribe</Text>
           </View>
         </View>
-        <View className="bg-white px-3 py-5 mt-5">
+        {/* <View className="bg-white px-3 py-5 mt-5">
           <Text className="text-lg font-medium">Your advert summary</Text>
         </View>
 
@@ -39,7 +39,7 @@ const TailorHome = () => {
               </Text>
             </View>
           </View>
-        </View>
+        </View> */}
         <View className=" px-3 py-5">
           <View className="bg-white mx-3 shadow-lg">
             <View className="border rounded-t-md px-5 py-3 ">
