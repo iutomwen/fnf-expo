@@ -52,18 +52,30 @@ const PersonalSignUpScreen = () => {
     data
   ) => {
     setLoading(true);
-    const { email, password, first_name, last_name } = data;
-    const { error } = await supabase.auth.signUp({
+    const { email, password, first_name, last_name, city, country, state } =
+      data;
+    const { error, data: newUser } = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: {
           first_name,
           last_name,
+          username: email.toLowerCase(),
           user_role: role,
         },
       },
     });
+    if (newUser.user?.id) {
+      await supabase
+        .from("profiles")
+        .update({
+          city_id: city,
+          country_id: country,
+          state_id: state,
+        })
+        .match({ id: newUser.user.id });
+    }
     if (error) {
       showToast({
         messageType: "error",
@@ -100,12 +112,14 @@ const PersonalSignUpScreen = () => {
       setSteps((steps) => steps + 1);
       mergeData(data.data);
     }
+    if (data.isSubmit) {
+      onSignUpPressed(formData);
+    }
   };
 
   const mergeData = (data: PersonalAccountSubmitForm) => {
     setFormData({ ...formData, ...data });
   };
-  console.log("form", formData);
   React.useEffect(() => {
     const backAction = (): boolean => {
       alert("Are you sure you want to go back?");

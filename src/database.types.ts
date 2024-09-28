@@ -74,7 +74,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "states"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       conversation: {
@@ -148,7 +148,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       countries: {
@@ -221,7 +221,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       payment: {
@@ -262,7 +262,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       product_images: {
@@ -294,7 +294,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "products"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       product_likes: {
@@ -330,7 +330,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       product_reviews: {
@@ -372,7 +372,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       product_views: {
@@ -408,7 +408,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       products: {
@@ -517,7 +517,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "sub_categories"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       profiles: {
@@ -528,6 +528,7 @@ export type Database = {
           bio: string | null
           city_id: number | null
           country_id: number | null
+          created_at: string | null
           disabled: boolean
           first_name: string | null
           gender: string | null
@@ -547,6 +548,7 @@ export type Database = {
           bio?: string | null
           city_id?: number | null
           country_id?: number | null
+          created_at?: string | null
           disabled?: boolean
           first_name?: string | null
           gender?: string | null
@@ -566,6 +568,7 @@ export type Database = {
           bio?: string | null
           city_id?: number | null
           country_id?: number | null
+          created_at?: string | null
           disabled?: boolean
           first_name?: string | null
           gender?: string | null
@@ -606,7 +609,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "states"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       report_bugs: {
@@ -641,7 +644,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       report_list: {
@@ -670,7 +673,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "reports"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       report_tickets: {
@@ -745,7 +748,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "stores"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       reports: {
@@ -795,7 +798,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "countries"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       store_likes: {
@@ -831,7 +834,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "stores"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       stores: {
@@ -924,7 +927,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "subscription_history"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       sub_categories: {
@@ -956,7 +959,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "categories"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       subcriptions: {
@@ -1044,7 +1047,87 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "subcriptions"
             referencedColumns: ["id"]
-          }
+          },
+        ]
+      }
+      tailors: {
+        Row: {
+          address: string | null
+          age: string | null
+          areaOfSpecial: string | null
+          city: number | null
+          country: number | null
+          created_at: string
+          description: string | null
+          details: string | null
+          experience: string | null
+          id: number
+          name: string | null
+          phone: string | null
+          profile_id: string | null
+          state: number | null
+        }
+        Insert: {
+          address?: string | null
+          age?: string | null
+          areaOfSpecial?: string | null
+          city?: number | null
+          country?: number | null
+          created_at?: string
+          description?: string | null
+          details?: string | null
+          experience?: string | null
+          id?: number
+          name?: string | null
+          phone?: string | null
+          profile_id?: string | null
+          state?: number | null
+        }
+        Update: {
+          address?: string | null
+          age?: string | null
+          areaOfSpecial?: string | null
+          city?: number | null
+          country?: number | null
+          created_at?: string
+          description?: string | null
+          details?: string | null
+          experience?: string | null
+          id?: number
+          name?: string | null
+          phone?: string | null
+          profile_id?: string | null
+          state?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tailors_city_fkey"
+            columns: ["city"]
+            isOneToOne: false
+            referencedRelation: "cities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tailors_country_fkey"
+            columns: ["country"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tailors_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tailors_state_fkey"
+            columns: ["state"]
+            isOneToOne: false
+            referencedRelation: "states"
+            referencedColumns: ["id"]
+          },
         ]
       }
       tickets: {
@@ -1088,7 +1171,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
     }
@@ -1096,7 +1179,18 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      username_exists: {
+        Args: {
+          p_username: string
+        }
+        Returns: boolean
+      }
+      verify_user_password: {
+        Args: {
+          password: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
@@ -1107,14 +1201,16 @@ export type Database = {
   }
 }
 
+type PublicSchema = Database[Extract<keyof Database, "public">]
+
 export type Tables<
   PublicTableNameOrOptions extends
-    | keyof (Database["public"]["Tables"] & Database["public"]["Views"])
+    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
         Database[PublicTableNameOrOptions["schema"]]["Views"])
-    : never = never
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
       Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
@@ -1122,67 +1218,67 @@ export type Tables<
     }
     ? R
     : never
-  : PublicTableNameOrOptions extends keyof (Database["public"]["Tables"] &
-      Database["public"]["Views"])
-  ? (Database["public"]["Tables"] &
-      Database["public"]["Views"])[PublicTableNameOrOptions] extends {
-      Row: infer R
-    }
-    ? R
+  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
+        PublicSchema["Views"])
+    ? (PublicSchema["Tables"] &
+        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
     : never
-  : never
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
-    | keyof Database["public"]["Tables"]
+    | keyof PublicSchema["Tables"]
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-    : never = never
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Insert: infer I
     }
     ? I
     : never
-  : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
-  ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
-      Insert: infer I
-    }
-    ? I
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
     : never
-  : never
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
-    | keyof Database["public"]["Tables"]
+    | keyof PublicSchema["Tables"]
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-    : never = never
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U
     }
     ? U
     : never
-  : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
-  ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
-      Update: infer U
-    }
-    ? U
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
     : never
-  : never
 
 export type Enums<
   PublicEnumNameOrOptions extends
-    | keyof Database["public"]["Enums"]
+    | keyof PublicSchema["Enums"]
     | { schema: keyof Database },
   EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
-    : never = never
+    : never = never,
 > = PublicEnumNameOrOptions extends { schema: keyof Database }
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
-  : PublicEnumNameOrOptions extends keyof Database["public"]["Enums"]
-  ? Database["public"]["Enums"][PublicEnumNameOrOptions]
-  : never
+  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
+    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never

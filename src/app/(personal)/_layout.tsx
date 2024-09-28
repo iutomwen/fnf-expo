@@ -15,7 +15,7 @@ export const unstable_settings = {
 };
 
 export default function CustomerLayout() {
-  const { session, isBusiness, loading } = useAuth();
+  const { session, isBusiness, loading, isTailor } = useAuth();
   const navigation = useNavigation();
   if (loading) {
     return <LoadingScreen text="authenticating ..." />;
@@ -26,6 +26,9 @@ export default function CustomerLayout() {
 
   if (isBusiness && session) {
     return <Redirect href={"/(business)/(tabs)/"} />;
+  }
+  if (isTailor && session) {
+    return <Redirect href={"/(tailor)/(tabs)/"} />;
   }
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

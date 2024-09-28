@@ -54,6 +54,7 @@ export type LegalInfoProps = {
   nextStep: (data: {
     info: string;
     isBack?: boolean;
+    isSubmit?: boolean;
     data?: LegalInfoForm &
       LocationInfoForm &
       EmailInfoForm &
@@ -94,6 +95,11 @@ export type PersonalAccountProps = Tables<"profiles"> & {
   };
 };
 
+export type TailorAccountProps = Tables<"tailors"> & {
+  city: Tables<"cities">;
+  state: Tables<"states">;
+  country: Tables<"countries">;
+};
 export type PasswordFormProps = {
   old_password: string;
   password: string;

@@ -2,52 +2,52 @@ import {
   View,
   Text,
   StyleSheet,
+  SafeAreaView,
   StatusBar,
   ScrollView,
   RefreshControl,
   TouchableOpacity,
-  SafeAreaView,
 } from "react-native";
 import React from "react";
-import Colors from "@/constants/Colors";
-// import {  } from "react-native-safe-area-context";
-import CustomHeadMenu from "@/components/common/CustomHeadMenu";
 import { useRouter } from "expo-router";
-import { wait } from "@/lib/helper";
+import { PersonalAccountProps, extraMenusProps } from "@/types";
+import Colors from "@/constants/Colors";
+import CustomHeadMenu from "@/components/common/CustomHeadMenu";
+import CustomAlertDialog from "@/components/common/CustomAlertDialog";
 import AvatarImage from "@/components/common/AvatarImage";
-import { useAuth } from "@/providers/AuthProvider";
-import { BusinessAccountProps, Tables, extraMenusProps } from "@/types";
-import { useMyStoreDetails } from "@/api/store";
-import LoadingScreen from "@/components/common/LoadingScreen";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Switch } from "react-native-elements";
+import { showToast, wait } from "@/lib/helper";
+import { useAuth } from "@/providers/AuthProvider";
+import { useGetMyProfileDetails } from "@/api/account";
 import { supabase } from "@/lib/supabase";
-import CustomAlertDialog from "@/components/common/CustomAlertDialog";
 
-const MoreSettings = () => {
+const TailorSettings = () => {
   const router = useRouter();
-  const { profile, logout } = useAuth();
+  const { logout } = useAuth();
+  const { data, isLoading, refetch } = useGetMyProfileDetails();
+  const [account, setAccount] = React.useState<PersonalAccountProps | null>(
+    null
+  );
   const [refreshing, setRefreshing] = React.useState(false);
-  const onRefresh = React.useCallback(() => {
+  const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
+    refetch();
     wait(2000).then(() => setRefreshing(false));
   }, []);
-  const [account, setAccount] = React.useState<BusinessAccountProps>();
-  const {
-    data: store,
-    error,
-    isLoading,
-  } = useMyStoreDetails(profile?.id || "");
-
   React.useEffect(() => {
-    if (store && store?.profile) {
-      setAccount(store.profile as unknown as BusinessAccountProps);
+    if (data) {
+      setAccount(data as unknown as PersonalAccountProps);
     }
-  }, [store]);
-
-  if (isLoading) {
-    return <LoadingScreen text="Loading profile details" />;
-  }
+  }, [data]);
+  const [isDialogVisible, setDialogVisible] = React.useState<boolean>(false);
+  const [inputValue, setInputValue] = React.useState<string>("");
+  const showAlertDialog = () => {
+    setDialogVisible(true);
+  };
+  const hideAlertDialog = () => {
+    setDialogVisible(false);
+  };
   const extraMenus: extraMenusProps[] = [
     {
       header: "Account & Settings",
@@ -58,39 +58,46 @@ const MoreSettings = () => {
           color: Colors.primary,
           label: "My Account",
           type: "link",
-          option: () => router.push("/(business)/profile/"),
+          option: () => router.push("/(tailor)/profile/"),
         },
-        {
-          icon: "heart",
-          color: Colors.primary,
-          label: "Users Favorite Products",
-          type: "link",
-          option: () => router.push("/(business)/(tabs)/favorites"),
-        },
-        {
-          icon: "shopping-bag",
-          color: Colors.primary,
-          label: "My Store",
-          type: "link",
-          option: () => router.push("/(business)/my-store"),
-        },
-        {
-          icon: "rss",
-          color: Colors.primary,
-          label: "Subscription",
-          type: "link",
-          option: () => router.push("/(business)/subscription/subscriptions"),
-        },
+
         {
           icon: "user-cog",
           color: Colors.primary,
           label: "Change Password",
           type: "link",
-          option: () => router.push("/(business)/profile/change-password"),
+          option: () => router.push("/(tailor)/profile/password"),
         },
       ],
     },
+    // {
+    //   header: "Preferences",
+    //   icon: "settings",
+    //   items: [
+    //     {
+    //       icon: "globe",
+    //       color: "#fe9400",
+    //       label: "Language",
+    //       type: "link",
+    //       option: () => alert("hello"),
+    //     },
+    //     {
+    //       icon: "moon",
+    //       color: Colors.primary,
+    //       label: "Dark Mode",
+    //       value: false,
+    //       type: "boolean",
+    //     },
 
+    //     {
+    //       icon: "accessible-icon",
+    //       color: "#fd2d54",
+    //       label: "Accessibility mode",
+    //       value: false,
+    //       type: "boolean",
+    //     },
+    //   ],
+    // },
     {
       header: "Help",
       icon: "help-circle",
@@ -132,22 +139,32 @@ const MoreSettings = () => {
       ],
     },
   ];
-  const [isDialogVisible, setDialogVisible] = React.useState<boolean>(false);
-  const [inputValue, setInputValue] = React.useState<string>("");
-  const showAlertDialog = () => {
-    setDialogVisible(true);
+  const handleConfirmation = async (value: string) => {
+    if (inputValue.toLowerCase() === "delete") {
+      // delete account
+      console.log("Account deleted");
+      showToast({
+        messageType: "success",
+        header: "Success",
+        message: "Account deleted successfully.",
+      });
+    } else {
+      showToast({
+        messageType: "error",
+        header: "Error",
+        message: "Wrong input.",
+      });
+      // console.log('Account deletion canceled');
+    }
+    hideAlertDialog();
+    setInputValue(value);
   };
-  const hideAlertDialog = () => {
-    setDialogVisible(false);
-  };
-  const handleConfirmation = async (value: string) => {};
   return (
     <SafeAreaView
       style={{
         flex: 1,
         backgroundColor: Colors.dark.tint,
         marginTop: StatusBar.currentHeight,
-        paddingBottom: 0,
       }}
     >
       <CustomHeadMenu
@@ -172,12 +189,12 @@ const MoreSettings = () => {
           <TouchableOpacity
             onPress={() => {
               // handle onPress
-              router.push("/(business)/profile/personal-profile");
+              router.push("/(tailor)/profile");
             }}
           >
             <View style={styles.profileAvatarWrapper}>
               <AvatarImage
-                file={account?.avatar_url}
+                file={account?.avatar_url || ""}
                 size={90}
                 name={"ProfileAvatar"}
               />
@@ -185,7 +202,7 @@ const MoreSettings = () => {
               <TouchableOpacity
                 onPress={() => {
                   // handle onPress
-                  router.push("/(business)/profile/edit-personal-profile");
+                  router.push("/(tailor)/profile/edit");
                 }}
               >
                 <View style={styles.profileAction}>
@@ -196,12 +213,12 @@ const MoreSettings = () => {
           </TouchableOpacity>
 
           <View>
-            <Text style={styles.profileName}>
+            <Text style={styles.profileName} className=" capitalize">
               {account?.first_name || "..."} {account?.last_name || "..."}
             </Text>
 
             <Text style={styles.profileAddress}>
-              {account?.address || "N/A"},{"\n"}
+              {/* {account?.address || "N/A"},{"\n"} */}
               {account?.city?.name || "N/A"} {account?.state?.name || "N/A"},{" "}
               {account?.country?.name || "N/A"}
             </Text>
@@ -259,7 +276,6 @@ const MoreSettings = () => {
     </SafeAreaView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 1,
@@ -346,4 +362,4 @@ const styles = StyleSheet.create({
     flexBasis: 0,
   },
 });
-export default MoreSettings;
+export default TailorSettings;

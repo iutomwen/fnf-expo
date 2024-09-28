@@ -4,11 +4,12 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import IntroHeader from "../IntroHeader";
 import CustomInput from "../CustomInput";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { EMAIL_REGEX } from "@/lib/helper";
+import { EMAIL_REGEX, showToast } from "@/lib/helper";
 import { EmailInfoForm, LegalInfoProps } from "@/types";
 import CustomButton from "../CustomButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoadingScreen from "../LoadingScreen";
+import { supabase } from "@/lib/supabase";
 
 const EmailInfo = ({ nextStep }: LegalInfoProps) => {
   const [hasLoaded, setHasLoaded] = React.useState(false);
@@ -44,6 +45,21 @@ const EmailInfo = ({ nextStep }: LegalInfoProps) => {
   const moveToNext: SubmitHandler<EmailInfoForm> = async (data) => {
     setLoading(true);
     setIsValid(true);
+    // @ts-ignore
+    let { data: user, error } = await supabase.rpc("username_exists", {
+      p_username: data.email?.toLowerCase(),
+    });
+    if (error) console.error(error);
+    else if (user) {
+      showToast({
+        message: "Email already exists",
+        messageType: "error",
+      });
+      setIsValid(false);
+      setLoading(false);
+      return;
+    }
+
     await AsyncStorage.setItem("email-info", JSON.stringify(data));
     setTimeout(() => {
       nextStep({

@@ -49,7 +49,6 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
-
   return (
     <AuthProvider>
       <QueryProvider>
@@ -60,8 +59,8 @@ function RootLayoutNav() {
         >
           <Stack.Screen name="modal" options={{ presentation: "modal" }} />
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="(personal)" options={{ headerShown: false }} />
-          <Stack.Screen name="(business)" options={{ headerShown: false }} />
+          {/* <Stack.Screen name="(personal)" options={{ headerShown: false }} /> */}
+          {/* <Stack.Screen name="(business)" options={{ headerShown: false }} /> */}
         </Stack>
         <Toast />
       </QueryProvider>

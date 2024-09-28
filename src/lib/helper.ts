@@ -1,5 +1,8 @@
 import { Alert } from "react-native";
-import Toast, { ToastShowParams } from "react-native-toast-message";
+import Toast, {
+  ToastPosition,
+  ToastShowParams,
+} from "react-native-toast-message";
 export const primaryColor = "#373136";
 export const wait = (timeout: number) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -157,13 +160,15 @@ export const showToast = ({
   messageType,
   header = "",
   message,
+  position = "bottom",
 }: {
   messageType: ToastShowParams["type"];
   header?: string;
   message: string;
+  position?: ToastPosition;
 }) => {
   Toast.show({
-    position: "bottom",
+    position,
     type: messageType,
     text1: header,
     text2: message,

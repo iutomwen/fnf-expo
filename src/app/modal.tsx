@@ -8,26 +8,29 @@ import LoadingScreen from "@/components/common/LoadingScreen";
 import { useEffect } from "react";
 
 export default function ModalScreen() {
-  const { session, isBusiness, loading } = useAuth();
-  if (loading) {
-    return;
-  }
+  const { session, isBusiness, loading, isPersonal, isTailor } = useAuth();
+
   if (!session) {
     return <Redirect href={"/(auth)/"} />;
   }
-
-  if (session && isBusiness) {
-    return <Redirect href={"/(business)/(tabs)/"} />;
+  if (session) {
+    if (isBusiness) {
+      return <Redirect href={"/(business)/(tabs)/"} />;
+    }
+    if (isPersonal) {
+      return <Redirect href={"/(personal)/(tabs)/"} />;
+    }
+    if (isTailor) {
+      return <Redirect href={"/(tailor)/(tabs)/"} />;
+    }
   }
-  if (session && !isBusiness) {
-    return <Redirect href={"/(personal)/(tabs)/"} />;
-  }
-  useEffect(() => {
-    console.log("am here");
-  }, []);
-  return (
+  return loading ? (
     <View style={styles.container}>
       <LoadingScreen text="loading screen ..." />
+    </View>
+  ) : (
+    <View style={styles.container}>
+      <LoadingScreen text="authenticating ..." />
     </View>
   );
 }

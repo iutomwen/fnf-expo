@@ -70,8 +70,17 @@ const BusinessSignUpScreen = () => {
   const { mutate: createUserStore } = useCreateUserStore();
   const onSignUpPressed: SubmitHandler<BusinessSubmitForm> = async (data) => {
     setLoading(true);
-    const { email, password, first_name, last_name, phone, business_name } =
-      data;
+    const {
+      email,
+      password,
+      first_name,
+      last_name,
+      phone,
+      business_name,
+      city,
+      country,
+      state,
+    } = data;
     const { error, data: newUser } = await supabase.auth.signUp({
       email,
       password,
@@ -80,6 +89,7 @@ const BusinessSignUpScreen = () => {
           first_name,
           last_name,
           user_role: role,
+          username: email.toLowerCase(),
           phone,
           business_name,
         },
@@ -91,7 +101,25 @@ const BusinessSignUpScreen = () => {
         profile_id: newUser.user.id,
         phone: phone,
       };
-      createUserStore(store);
+      try {
+        createUserStore(store);
+      } catch (error) {
+        showToast({
+          messageType: "error",
+          header: "Error",
+          message: "An error occurred while creating your account",
+        });
+        setLoading(false);
+      } finally {
+        await supabase
+          .from("profiles")
+          .update({
+            city_id: city,
+            country_id: country,
+            state_id: state,
+          })
+          .match({ id: newUser.user.id });
+      }
     }
 
     if (error) {
@@ -129,12 +157,14 @@ const BusinessSignUpScreen = () => {
       setSteps((steps) => steps + 1);
       mergeData(data.data);
     }
+    if (data.isSubmit) {
+      onSignUpPressed(formData);
+    }
   };
 
   const mergeData = (data: BusinessSubmitForm) => {
     setFormData({ ...formData, ...data });
   };
-  console.log("B-form", formData);
   React.useEffect(() => {
     const backAction = (): boolean => {
       alert("Are you sure you want to go back?");

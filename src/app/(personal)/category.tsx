@@ -47,7 +47,6 @@ const CategoryScreen = () => {
         if (JSON.parse(value).length > 0) {
           // value previously stored
           const alreadyFilter = JSON.parse(value);
-          // console.log("count: ",alreadyFilter)
           const arrayOfIds = alreadyFilter.map((obj: { _id: any }) => obj._id);
           const filteredProducts =
             products &&

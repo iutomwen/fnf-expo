@@ -20,10 +20,10 @@ import { Switch } from "react-native-elements";
 import { showToast, wait } from "@/lib/helper";
 import { useAuth } from "@/providers/AuthProvider";
 import { useGetMyProfileDetails } from "@/api/account";
-import { supabase } from "@/lib/supabase";
 
 const MoreSettingsScreen = () => {
   const router = useRouter();
+  const { logout } = useAuth();
   const { data, isLoading, refetch } = useGetMyProfileDetails();
   const [account, setAccount] = React.useState<PersonalAccountProps | null>(
     null
@@ -247,7 +247,7 @@ const MoreSettingsScreen = () => {
                       }
                     }
                     if (type === "logout") {
-                      await supabase.auth.signOut();
+                      logout();
                     }
                     if (type === "delete") {
                       showAlertDialog();
