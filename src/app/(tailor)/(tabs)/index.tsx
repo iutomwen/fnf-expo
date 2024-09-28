@@ -1,10 +1,6 @@
-import { View, Text, ScrollView, Pressable } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Colors from "@/constants/Colors";
-import AvatarImage from "@/components/common/AvatarImage";
-import Feather from "@expo/vector-icons/Feather";
-import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import { useRouter } from "expo-router";
 import CustomButton from "@/components/common/CustomButton";
 const TailorHome = () => {

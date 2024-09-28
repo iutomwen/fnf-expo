@@ -18,7 +18,7 @@ type UserSubmitForm = {
   password: string;
 };
 const SignInSCreen = () => {
-  const { control, handleSubmit } = useForm<UserSubmitForm>();
+  const { control, handleSubmit, setError } = useForm<UserSubmitForm>();
   const router = useRouter();
   const [isLoading, setLoading] = React.useState(false);
   const onForgotPasswordPressed = () => {
@@ -37,10 +37,14 @@ const SignInSCreen = () => {
     });
 
     if (error) {
+      setError("email", {
+        message: error.message,
+      });
       showToast({
         messageType: "error",
         header: "Error",
         message: error.message,
+        position: "top",
       });
       setLoading(false);
     }

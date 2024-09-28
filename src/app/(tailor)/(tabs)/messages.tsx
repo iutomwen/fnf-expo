@@ -1,12 +1,8 @@
-import { View, Text } from "react-native";
 import React from "react";
+import MessageCenter from "@/app/(common)/message";
 
 const MeesageCenter = () => {
-  return (
-    <View>
-      <Text>MeesageCenter</Text>
-    </View>
-  );
+  return <MessageCenter />;
 };
 
 export default MeesageCenter;

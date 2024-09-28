@@ -57,13 +57,7 @@ export default function PersonalTabLayout() {
           tabBarBadge: 0,
         }}
       />
-      <Tabs.Screen
-        name="favorites"
-        options={{
-          title: "Favorites",
-          tabBarIcon: ({ color }) => <TabBarIcon name="heart" color={color} />,
-        }}
-      />
+
       <Tabs.Screen
         name="more"
         options={{
