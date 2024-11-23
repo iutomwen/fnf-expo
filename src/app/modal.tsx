@@ -11,17 +11,17 @@ export default function ModalScreen() {
   const { session, isBusiness, loading, isPersonal, isTailor } = useAuth();
 
   if (!session) {
-    return <Redirect href={"/(auth)/"} />;
+    return <Redirect href={"/(auth)"} />;
   }
   if (session) {
     if (isBusiness) {
-      return <Redirect href={"/(business)/(tabs)/"} />;
+      return <Redirect href={"/(business)/(tabs)"} />;
     }
     if (isPersonal) {
-      return <Redirect href={"/(personal)/(tabs)/"} />;
+      return <Redirect href={"/(personal)/(tabs)"} />;
     }
     if (isTailor) {
-      return <Redirect href={"/(tailor)/(tabs)/"} />;
+      return <Redirect href={"/(tailor)/(tabs)"} />;
     }
   }
   return loading ? (
