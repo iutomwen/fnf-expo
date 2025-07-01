@@ -2,6 +2,7 @@ import { useColorScheme } from "@/components/useColorScheme";
 import AuthProvider, { useAuth } from "@/providers/AuthProvider";
 import QueryProvider from "@/providers/QueryProvider";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -57,8 +58,8 @@ function RootLayoutNav() {
             headerShown: false,
           }}
         >
-          <Stack.Screen name="modal" options={{ presentation: "modal" }} />
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          {/* <Stack.Screen name="modal" options={{ presentation: "modal" }} /> */}
           {/* <Stack.Screen name="(personal)" options={{ headerShown: false }} /> */}
           {/* <Stack.Screen name="(business)" options={{ headerShown: false }} /> */}
         </Stack>
