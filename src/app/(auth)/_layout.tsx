@@ -11,11 +11,11 @@ export default function AuthLayout() {
 
   if (session) {
     if (isBusiness) {
-      return <Redirect href={"/(business)/(tabs)/"} />;
+      return <Redirect href={"/(business)/(tabs)"} />;
     } else if (isTailor) {
-      return <Redirect href={"/(tailor)/(tabs)/"} />;
+      return <Redirect href={"/(tailor)/(tabs)"} />;
     } else if (isPersonal) {
-      return <Redirect href={"/(personal)/(tabs)/"} />;
+      return <Redirect href={"/(personal)/(tabs)"} />;
     } else {
       return <LoadingScreen text="authenticating user ..." />;
     }
